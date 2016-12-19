@@ -4,11 +4,34 @@ I was reading an article on testing the other night and it claimed that 100% cod
 
 ### The test
 
-Given the following function which returns the largest of 2 numbers,  what tests would you write?
+Given the following (c#) function which returns the largest of 2 numbers,  what tests would you write?
 
 
 ```markdown
-Syntax highlighted code block
+ private int Largest(int value1, int value2)
+```
+
+**HAVE A THINK BEFORE READING ON!**
+
+
+
+
+I expect you came up with tests along the following lines:
+
+- The first number is largest   
+- The second number is largest
+- Both numbers are equal
+
+```markdown
+Assert.AreEqual (4,  Largest(3,4));
+Assert.AreEqual (5,  Largest(5,4));
+Assert.AreEqual (6,  Largest(6,6));
+```
+
+
+
+
+
 
 # Header 1
 ## Header 2
@@ -23,7 +46,7 @@ Syntax highlighted code block
 **Bold** and _Italic_ and `Code` text
 
 [Link](url) and ![Image](src)
-```
+
 
 For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
 
