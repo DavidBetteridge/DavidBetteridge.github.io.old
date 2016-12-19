@@ -1,4 +1,3 @@
-
 ## A testing test
 
 I was reading an article on testing the other night and it claimed that 100% code coverage is not really enough.  As I agreed with the most things which were said I thought that I would come up with a fun example to demostrate this.
@@ -42,32 +41,19 @@ Assert.AreEqual (1,  Largest(1,0));
 I'm now going to let you see the body of the function.  Clearly we already have 100% test coverage,  but would you write an additional tests?
 
 ```markdown
-private int Largest(int value1, int value2) => (value1 - value2) > 0 ? value1 : value2;
+private int Largest(int value1, int value2) 
+              => (value1 - value2) > 0 ? value1 : value2;
 ```
 
+**HAVE A THINK BEFORE READING ON!**
+
+As there is some subtraction going on,  prehaps we ought to include some tests for negative numbers.
+
+```markdown
+Assert.AreEqual (0,  Largest(0,-10));
+Assert.AreEqual (-10,  Largest(-10,-20));
+```
+
+So we are now update to 7 unit tests for our one line of code,  but we haven't yet found the bug.
 
 
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/DavidBetteridge/DavidBetteridge.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
