@@ -1,12 +1,11 @@
 ## A testing test
 
-You can use the [editor on GitHub](https://github.com/DavidBetteridge/DavidBetteridge.github.io/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
+I was reading an article on testing the other night and it claimed that 100% code coverage is not really enough.  As I agreed with the most things which were said I thought that I would come up with a fun example to demostrate this.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### The test
 
-### Markdown
+Given the following function which returns the largest of 2 numbers,  what tests would you write?
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
 ```markdown
 Syntax highlighted code block
