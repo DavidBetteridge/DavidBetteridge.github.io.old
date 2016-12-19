@@ -1,6 +1,6 @@
 ## A testing test
 
-I was reading an article on testing the other night and it claimed that 100% code coverage is not really enough.  As I agreed with the most things which were said I thought that I would come up with a fun example to demostrate this.
+I was reading an article on testing the other night and it claimed that 100% code coverage is not really enough.  As I agreed with most of the things which were said I thought that I would come up with a fun example to demostrate this.
 
 ### The test
 
@@ -18,8 +18,8 @@ Given the following (c#) function which returns the largest of 2 numbers,  what 
 
 I expect you came up with tests along the following lines:
 
-- The first number is largest   
 - The second number is largest
+- The first number is largest   
 - Both numbers are equal
 
 ```markdown
@@ -38,7 +38,7 @@ Assert.AreEqual (1,  Largest(1,0));
 
 
 ### The source code
-I'm now going to let you see the body of the function.  Clearly we already have 100% test coverage,  but would you write an additional tests?
+I'm now going to let you see the body of the function.  Clearly we already have 100% code coverage,  but would you write any additional tests?
 
 ```markdown
 private int Largest(int value1, int value2) 
@@ -47,13 +47,13 @@ private int Largest(int value1, int value2)
 
 **HAVE A THINK BEFORE READING ON!**
 
-As there is some subtraction going on,  prehaps we ought to include some tests for negative numbers.
+You might think as there is some subtraction going on,  prehaps we ought to include some tests for negative numbers.
 
 ```markdown
 Assert.AreEqual (0,  Largest(0,-10));
 Assert.AreEqual (-10,  Largest(-10,-20));
 ```
 
-So we are now update to 7 unit tests for our one line of code,  but we haven't yet found the bug.
+So we are now up to 7 passing unit tests for our one line of code,  but we haven't yet found the bug.
 
 
