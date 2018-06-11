@@ -20,7 +20,7 @@
 
             // //Best case
             // var start = new Microsoft.Maps.Location(54.135835, -0.789643);
-            // var finish = new Microsoft.Maps.Location(53.348232, -1.750562);
+            // 
             // var coords = [finish, start];
             // var line = new Microsoft.Maps.Polyline(coords, {
             //     strokeColor: 'red',
@@ -29,7 +29,20 @@
             // });
             // map.entities.push(line);      
 
-            //Add the rings
+            addRings();
+                
+        }
+
+        function updateMap(minutesSinceStart) {
+            map.entities.clear();
+            addRings();
+            var coords = displayRunner("https://davidbetteridge.github.io/data/714_634.kml", map, minutesSinceStart)
+            var coords = displayRunner("https://davidbetteridge.github.io/data/71_HelenPike.kml", map, minutesSinceStart)
+            var coords = displayRunner("https://davidbetteridge.github.io/data/26_HuwGrange.kml", map, minutesSinceStart)
+        }
+
+        function addRings() {
+            var finish = new Microsoft.Maps.Location(53.348232, -1.750562);
             Microsoft.Maps.loadModule('Microsoft.Maps.SpatialMath', function () {
                 var circle1 = createCircle(finish, 30, 'rgba(0,0,150,0.1)');
                 map.entities.push(circle1);
@@ -39,15 +52,9 @@
 
                 var circle3 = createCircle(finish, 90, 'rgba(0,0,150,0.2)');
                 map.entities.push(circle3);
-
-            });                  
+            });   
         }
 
-        function updateMap(minutesSinceStart) {
-            map.entities.clear();
-            var coords = displayRunner("https://davidbetteridge.github.io/data/714_634.kml", map, minutesSinceStart)
-            var coords = displayRunner("https://davidbetteridge.github.io/data/71_HelenPike.kml", map, minutesSinceStart)
-        }
 
         function createCircle(center, radius, color) {
             //Calculate the locations for a regular polygon that has 36 locations which will result in an approximate circle.
