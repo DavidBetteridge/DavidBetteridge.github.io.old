@@ -10,7 +10,8 @@
             var map = new Microsoft.Maps.Map('#myMap', {
                 credentials: 'AnH2g7aIGWg0fbknGUkBgIkHuQE92PVrFktrKYRql4UBSskXajCI_c0R6rUPNxuh',
                 center: new Microsoft.Maps.Location(53.348232, -1.750562),
-                zoom: 8
+                zoom: 8,
+                mapTypeId: Microsoft.Maps.MapTypeId.ordnanceSurvey
             });
 
             //Best case
@@ -25,7 +26,6 @@
             map.entities.push(line);
 
             // Actual route
-            var mid = new Microsoft.Maps.Location(53.776971, -1.248179);
             var coords = [];
             coords.push(new Microsoft.Maps.Location(54.135835, -0.789643));
             coords.push(new Microsoft.Maps.Location(54.135835, -0.789643));
@@ -797,7 +797,7 @@
             var line = new Microsoft.Maps.Polyline(coords, {
                 strokeColor: 'blue',
                 strokeThickness: 3,
-               // strokeDashArray: [4, 4]
+                // strokeDashArray: [4, 4]
             });
             map.entities.push(line);
 
@@ -819,6 +819,23 @@
             //Calculate the locations for a regular polygon that has 36 locations which will result in an approximate circle.
             var locs = Microsoft.Maps.SpatialMath.getRegularPolygon(center, radius, 36, Microsoft.Maps.SpatialMath.DistanceUnits.Miles);
             return new Microsoft.Maps.Polygon(locs, { fillColor: color, strokeThickness: 0 });
+        }
+
+        function readXml(xmlFile) {
+
+            var xmlDoc;
+
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("GET", xmlFile, false);
+            if (xmlhttp.overrideMimeType) {
+                xmlhttp.overrideMimeType('text/xml');
+            }
+            xmlhttp.send();
+            xmlDoc = xmlhttp.responseXML;
+
+            var tagObj = xmlDoc.getElementsByTagName("marker");
+            var typeValue = tagObj[0].getElementsByTagName("type")[0].childNodes[0].nodeValue;
+            var titleValue = tagObj[0].getElementsByTagName("title")[0].childNodes[0].nodeValue;
         }
 
     </script>
