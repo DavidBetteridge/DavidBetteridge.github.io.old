@@ -18,22 +18,23 @@
             });
             
 
-            // //Best case
-            // var start = new Microsoft.Maps.Location(54.135835, -0.789643);
-            // 
-            // var coords = [finish, start];
-            // var line = new Microsoft.Maps.Polyline(coords, {
-            //     strokeColor: 'red',
-            //     strokeThickness: 3,
-            //     //      strokeDashArray: [4, 4]
-            // });
-            // map.entities.push(line);      
+            //Best case
+            var start = new Microsoft.Maps.Location(54.135835, -0.789643);
+            var finish = new Microsoft.Maps.Location(53.348232, -1.750562);            
+            var coords = [finish, start];
+            var line = new Microsoft.Maps.Polyline(coords, {
+                strokeColor: 'red',
+                strokeThickness: 3,
+                //      strokeDashArray: [4, 4]
+            });
+            map.entities.push(line);      
 
             addRings();
-                
+            updateMap(50* 14.4);
         }
 
         function updateMap(minutesSinceStart) {
+
             map.entities.clear();
             addRings();
             var coords = displayRunner("https://davidbetteridge.github.io/data/714_634.kml", map, minutesSinceStart)
