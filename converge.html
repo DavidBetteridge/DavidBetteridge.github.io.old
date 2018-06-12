@@ -16,27 +16,28 @@
                 zoom: 8,
                 mapTypeId: Microsoft.Maps.MapTypeId.ordnanceSurvey
             });
-            
 
-            //Best case
+            updateMap(50 * 14.4);
+        }
+
+        function bestRoute() {
             var start = new Microsoft.Maps.Location(54.135835, -0.789643);
-            var finish = new Microsoft.Maps.Location(53.348232, -1.750562);            
+            var finish = new Microsoft.Maps.Location(53.348232, -1.750562);
             var coords = [finish, start];
             var line = new Microsoft.Maps.Polyline(coords, {
                 strokeColor: 'red',
                 strokeThickness: 3,
                 //      strokeDashArray: [4, 4]
             });
-            map.entities.push(line);      
-
-            addRings();
-            updateMap(50* 14.4);
+            map.entities.push(line);
         }
+
 
         function updateMap(minutesSinceStart) {
 
             map.entities.clear();
             addRings();
+            bestRoute();
             var coords = displayRunner("https://davidbetteridge.github.io/data/714_634.kml", map, minutesSinceStart)
             var coords = displayRunner("https://davidbetteridge.github.io/data/71_HelenPike.kml", map, minutesSinceStart)
             var coords = displayRunner("https://davidbetteridge.github.io/data/26_HuwGrange.kml", map, minutesSinceStart)
@@ -53,7 +54,7 @@
 
                 var circle3 = createCircle(finish, 90, 'rgba(0,0,150,0.2)');
                 map.entities.push(circle3);
-            });   
+            });
         }
 
 
