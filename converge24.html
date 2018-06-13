@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap' async defer></script>
+    <script type='text/javascript'>
+
+        var map;
+
+        function GetMap() {
+            map = new Microsoft.Maps.Map('#myMap', {
+                credentials: 'AnH2g7aIGWg0fbknGUkBgIkHuQE92PVrFktrKYRql4UBSskXajCI_c0R6rUPNxuh',
+                center: new Microsoft.Maps.Location(53.348232, -1.750562),
+                zoom: 8,
+                mapTypeId: Microsoft.Maps.MapTypeId.ordnanceSurvey
+            });
+
+            updateMap(50 * 14.4);
+        }
+
+        function bestRoute() {
+            var start = new Microsoft.Maps.Location(54.135835, -0.789643);
+            var finish = new Microsoft.Maps.Location(53.348232, -1.750562);
+            var coords = [finish, start];
+            var line = new Microsoft.Maps.Polyline(coords, {
+                strokeColor: 'red',
+                strokeThickness: 3,
+                //      strokeDashArray: [4, 4]
+            });
+            map.entities.push(line);
+        }
+
+
+        function updateMap(minutesSinceStart) {
+
+            map.entities.clear();
+           // addRings();
+            displayRunner("https://davidbetteridge.github.io/data/24_Riccardo.kml", map, minutesSinceStart)
+        }
+
+        function addRings() {
+            var finish = new Microsoft.Maps.Location(53.348232, -1.750562);
+            Microsoft.Maps.loadModule('Microsoft.Maps.SpatialMath', function () {
+                var circle1 = createCircle(finish, 30, 'rgba(0,0,150,0.1)');
+                map.entities.push(circle1);
+
+                var circle2 = createCircle(finish, 60, 'rgba(0,0,150,0.1)');
+                map.entities.push(circle2);
+
+                var circle3 = createCircle(finish, 90, 'rgba(0,0,150,0.2)');
+                map.entities.push(circle3);
+            });
+        }
+
+
+        function createCircle(center, radius, color) {
+            //Calculate the locations for a regular polygon that has 36 locations which will result in an approximate circle.
+            var locs = Microsoft.Maps.SpatialMath.getRegularPolygon(center, radius, 36, Microsoft.Maps.SpatialMath.DistanceUnits.Miles);
+            return new Microsoft.Maps.Polygon(locs, { fillColor: color, strokeThickness: 0 });
+        }
+
+        function displayRunner(xmlFile, map, minutesSinceStart) {
+
+            function handler() {
+                if (this.status == 200 &&
+                    this.responseXML != null) {
+                    var xmlDoc = this.responseXML;
+                    var coords = [];
+
+                    var placemark = xmlDoc.getElementsByTagName("Placemark");
+                    for (var i = 0; i < placemark.length; i++) {
+                        var lookup = placemark[i].getElementsByTagName("LookAt");
+                        if (lookup != null && lookup.length > 0) {
+                            var description = placemark[i].getElementsByTagName("description")[0].childNodes[0].nodeValue;
+                            var start = description.indexOf("Time:") + 5;
+                            var when = description.substring(start, start + 19);
+
+                            var start = new Date("2018-06-09 12:00:00");
+                            var thisPoint = new Date(when);
+                            var minutes = Math.floor(((thisPoint - start) % (60 * 60 * 24 * 1000)) / (60 * 1000));
+
+                            if (minutes <= minutesSinceStart) {
+                                var longitude = lookup[0].getElementsByTagName("longitude")[0].childNodes[0].nodeValue;
+                                var latitude = lookup[0].getElementsByTagName("latitude")[0].childNodes[0].nodeValue;
+                                coords.push(new Microsoft.Maps.Location(latitude, longitude));
+                            }
+
+                        }
+                    }
+
+                    if (coords.length > 0) {
+                        var line = new Microsoft.Maps.Polyline(coords, {
+                            strokeColor: 'blue',
+                            strokeThickness: 3,
+                            // strokeDashArray: [4, 4]
+                        });
+                        map.entities.push(line);
+                    }
+                } else {
+                    alert("error");
+                }
+            }
+
+            var client = new XMLHttpRequest();
+            client.onload = handler;
+            client.open("GET", xmlFile);
+            client.send();
+        }
+
+        function setup() {
+            var slider = document.getElementById("myRange");
+            slider.oninput = function () {
+                var minutes = this.value * 14.4;
+                updateMap(minutes);
+            }
+        }
+    </script>
+
+    <style>
+        .slidecontainer {
+            width: 100%;
+            /* Width of the outside container */
+        }
+
+        /* The slider itself */
+
+        .slider {
+            -webkit-appearance: none;
+            /* Override default CSS styles */
+            appearance: none;
+            width: 100%;
+            /* Full-width */
+            height: 25px;
+            /* Specified height */
+            background: #d3d3d3;
+            /* Grey background */
+            outline: none;
+            /* Remove outline */
+            opacity: 0.7;
+            /* Set transparency (for mouse-over effects on hover) */
+            -webkit-transition: .2s;
+            /* 0.2 seconds transition on hover */
+            transition: opacity .2s;
+        }
+
+        /* Mouse-over effects */
+
+        .slider:hover {
+            opacity: 1;
+            /* Fully shown on mouse-over */
+        }
+
+        /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            /* Override default look */
+            appearance: none;
+            width: 25px;
+            /* Set a specific slider handle width */
+            height: 25px;
+            /* Slider handle height */
+            background: #4CAF50;
+            /* Green background */
+            cursor: pointer;
+            /* Cursor on hover */
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            /* Set a specific slider handle width */
+            height: 25px;
+            /* Slider handle height */
+            background: #4CAF50;
+            /* Green background */
+            cursor: pointer;
+            /* Cursor on hover */
+        }
+    </style>
+</head>
+
+<body onload="setup()">
+    <div class="slidecontainer">
+        <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+    </div>
+
+    <div id="myMap" style="position:relative;width:1000px;height:850px;"></div>
+</body>
